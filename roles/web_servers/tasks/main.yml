@@ -1,0 +1,30 @@
+---
+- name: Install necessary packages
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes
+
+- name: Add the Elasticsearch GPG Key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elasticsearch APT repository
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+    state: present
+
+- name: Install Elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+
+- name: Ensure Elasticsearch is running and enabled
+  service:
+    name: elasticsearch
+    state: started
+    enabled: true
